@@ -12,7 +12,8 @@ keywords = ["lowercase", "case", "case-insensitive", "case-folding", "no_std"]
 categories = ["internationalization", "text-processing", "no-std"]
 
 exclude = [
-    "scripts/*"
+    "scripts/*",
+    "sgx/*",
 ]
 
 build = "build.rs"
@@ -22,3 +23,8 @@ version_check = "0.9"
 
 [features]
 nightly = []
+default = ["mesalock_sgx"]
+mesalock_sgx = ["sgx_tstd"]
+
+[dependencies]
+sgx_tstd = { rev = "v1.0.9", git = "https://github.com/baidu/rust-sgx-sdk.git", optional = true }
