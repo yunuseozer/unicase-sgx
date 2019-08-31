@@ -2,13 +2,17 @@
 #![cfg_attr(test, deny(warnings))]
 #![doc(html_root_url = "https://docs.rs/unicase/2.6.0")]
 #![cfg_attr(feature = "nightly", feature(test))]
-#![cfg_attr(
-    all(
-        __unicase__core_and_alloc,
-        not(test),
-    ),
-    no_std,
-)]
+//#![cfg_attr(
+//    all(
+//        __unicase__core_and_alloc,
+//        not(test),
+//    ),
+//    no_std,
+//)]
+
+#![cfg_attr(all(feature = "mesalock_sgx",
+                not(target_env = "sgx")), no_std)]
+#![cfg_attr(all(target_env = "sgx", target_vendor = "mesalock"), feature(rustc_private))]
 
 //! # UniCase
 //!
@@ -49,20 +53,29 @@
 //! assert_eq!(a, b);
 //! ```
 
+#[cfg(all(feature = "mesalock_sgx", not(target_env = "sgx")))]
+extern crate sgx_tstd as std;
+
 #[cfg(feature = "nightly")]
 extern crate test;
 
-#[cfg(all(__unicase__core_and_alloc, not(test)))]
+//#[cfg(all(__unicase__core_and_alloc, not(test)))]
+//extern crate alloc;
+//#[cfg(all(__unicase__core_and_alloc, not(test)))]
+//use alloc::string::String;
+//
+//#[cfg(not(all(__unicase__core_and_alloc, not(test))))]
+//extern crate std as alloc;
+//#[cfg(not(all(__unicase__core_and_alloc, not(test))))]
+//extern crate std as core;
+//
+//use alloc::borrow::Cow;
+#[cfg(target_env = "sgx")]
+extern crate core;
+
 extern crate alloc;
-#[cfg(all(__unicase__core_and_alloc, not(test)))]
-use alloc::string::String;
-
-#[cfg(not(all(__unicase__core_and_alloc, not(test))))]
-extern crate std as alloc;
-#[cfg(not(all(__unicase__core_and_alloc, not(test))))]
-extern crate std as core;
-
-use alloc::borrow::Cow;
+use std::prelude::v1::*;
+use std::borrow::Cow;
 #[cfg(__unicase__iter_cmp)]
 use core::cmp::Ordering;
 use core::fmt;

@@ -1,0 +1,22 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index 195b93d..3584e80 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -83,7 +83,7 @@ use core::hash::{Hash, Hasher};
+ use core::ops::{Deref, DerefMut};
+ use core::str::FromStr;
+ 
+-use self::unicode::Unicode;
++pub use self::unicode::Unicode;
+ 
+ mod ascii;
+ mod unicode;
+@@ -94,7 +94,7 @@ pub struct UniCase<S>(Encoding<S>);
+ 
+ /// Case Insensitive wrapper of Ascii strings.
+ #[derive(Clone, Copy, Debug, Default)]
+-pub struct Ascii<S>(S);
++pub struct Ascii<S>(pub S);
+ 
+ /// Compare two string-like types for case-less equality, using unicode folding.
+ ///
